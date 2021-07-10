@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\User;
-class Profile extends Model
+
+class Card extends Model
 {
     use HasFactory;
 
-    protected $table = 'profiles';
+    protected $table = 'cards';
 
     protected $fillable = [
         'name', 
@@ -17,17 +17,8 @@ class Profile extends Model
         'email',
         'phone',
         'created_at',
-        'updated_at',
-        'user_id'
+        'updated_at'
     ];
 
     public $incrementing = true;
-
-    /**
-     * Get the user for a profile.
-     */
-    public function user()
-    {
-        return $this->hasOne(User::class);
-    }
 }

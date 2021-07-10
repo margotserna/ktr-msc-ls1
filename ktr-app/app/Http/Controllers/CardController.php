@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Card;
 use Illuminate\Http\Request;
-use App\Models\Profile;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\UserController as User;
 
-class ProfileController extends Controller
+class CardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +13,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->profile_id) {
-            return redirect()->route('profile.show', Profile::find(Auth::user()->profile_id, 'id'));
-        } else {
-            return redirect()->route('profile.create');
-        }
+        $cards = Card::all();
+        return view('card/index', compact('cards'));
     }
 
     /**
@@ -30,7 +24,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        return view('profile.create');
+        return view('card.create');
     }
 
     /**
@@ -41,21 +35,16 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        
         $request->validate([
-            'name' => 'required|max:255|string|',
+            'name' => 'nullable|max:255|string|',
             'company' => 'nullable|string|max:255',
-            'email' => 'nullable|max:255|email|string', 
+            'email' => 'required|max:255|email|string', 
             'phone' => ['nullable', 'string', 'regex:/^(\+33|0)[1-9]{9}+$/']
         ]);
         
-        Profile::create($request->all());
+        Card::create($request->all());
 
-        $profile_id = Profile::orderby('created_at', 'desc')->first()->id;
-        User::update_profile_id ($profile_id);
-        
-
-        return redirect()->route('profile.index')
+        return redirect()->route('card.index')
                         ->with('success','Profile created successfully.');
     }
 
@@ -65,9 +54,9 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Profile $profile)
+    public function show($id)
     {
-        return view('profile.show', compact('profile'));
+        //
     }
 
     /**
