@@ -8,7 +8,9 @@ In ktr-app folder :
 
 2. Run `composer install`
 
-3. To add migration, run `php artisan migrate`
+3. Run `php artisan key:generate`
 
-4. To run the project, run `php artisan serve`
+4. To add migration, run `php artisan migrate`
+
+5. To run the project, run `php artisan serve`
 
